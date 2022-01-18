@@ -21,6 +21,6 @@ public class sce : MonoBehaviour
     }
     public void Scene1()
     {
-        SceneManager.LoadScene("test");
+        SceneManager.LoadScene("Prototype 5");
     }
 }
