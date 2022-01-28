@@ -720,6 +720,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   apple: {fileID: 2707602426541971189, guid: c27c924571124bb46a73350910c8e433, type: 3}
+  banana: {fileID: 2068265011301617528, guid: 4d01f28891d6eb146aeb7e474d3734fb, type: 3}
+  bomb: {fileID: 4577011096262058614, guid: acf58b04e7ebd384098e03e393c45c27, type: 3}
+  kiwi: {fileID: 10325261359901297, guid: 0e055a7a53661344ba14f295d59c2758, type: 3}
+  watermelon: {fileID: 7708120057613496781, guid: 607671fe35ce2a7449880240588e22f0,
+    type: 3}
+  fails: 0
+  tableauOccurences: []
+  fruitListre: []
+  fruitListco: []
+  fruits: []
+  newdata: 0
 --- !u!4 &1560275878
 Transform:
   m_ObjectHideFlags: 0
