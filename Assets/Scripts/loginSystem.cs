@@ -25,7 +25,7 @@ public class loginSystem : MonoBehaviour
     public static string id;
     public static string scoreJeu;
     public static string typeJ;
-
+    public static int nouveau;
 
 
 
@@ -55,14 +55,16 @@ public class loginSystem : MonoBehaviour
 
 
     public void Login()
+
     {
+        //permet d'ajouter un nouvelle utilisateur
         ConnectBDD();
         bool Exist = false;
 
         //verifier que l'utilisateur n'existe pas deja
-        
+
         MySqlCommand commandsql = new MySqlCommand("SELECT `pseudo`, `score`, `ID` , `typeJoueur` FROM `Users` WHERE (pseudo ='" + IfLogin.text + "')", connec);
-        
+
         MySqlDataReader MyReader = commandsql.ExecuteReader();
         while (MyReader.Read())
         {
@@ -73,44 +75,45 @@ public class loginSystem : MonoBehaviour
             }
         }
         MyReader.Close();
-       
 
-        if (!Exist) {
-            
+
+        if (!Exist)
+        {
+
             // insert le nouveau joueur
             string command = "INSERT INTO `Users`(`pseudo`, `typeJoueur`) VALUES('" + IfLogin.text + "'," + "'debutant')";
-            
+
             MySqlCommand cmd = new MySqlCommand(command, connec);
 
             try
             {
                 cmd.ExecuteReader();
-               
+
 
             }
             catch (IOException Ex)
             {
-                
+
                 txtstate.text = Ex.ToString();
             }
             string name = IfLogin.text;
             SceneManager.LoadScene("Scene3");
-            
+
             cmd.Dispose();
-         
+
             Debug.Log(name);
 
 
-        
+
             // recupere les info du joueur
-            
+
             MySqlCommand commandsql1 = new MySqlCommand("SELECT * FROM `Users` WHERE (pseudo ='" + name + "')", con);
             MySqlDataReader MyR = commandsql1.ExecuteReader();
-            
+
 
             try
             {
-                
+
                 while (MyR.Read())
                 {
 
@@ -124,25 +127,29 @@ public class loginSystem : MonoBehaviour
                 }
                 MyR.Close();
             }
-            catch(IOException Ex)
+            catch (IOException Ex)
             {
-               
+
                 txtstate.text = Ex.ToString();
             }
-           
+
             pseudo = IfLogin.text;
             typeJ = "debutant";
-          
+            nouveau = 1; //on a un nouveau joueur
+            recupMatrice(nouveau, pseudo);
             commandsql1.Dispose();
             con.Close();
-            
+
+
 
         }
-      
+
     }
 
+
+
     public void Connect()
-    {
+    { // permet de se connecter
         ConnectBDD();
         bool Exist = false;
 
@@ -157,10 +164,12 @@ public class loginSystem : MonoBehaviour
             if (MyReader["pseudo"].ToString() != "")
             {
                 id = MyReader["ID"].ToString();
-                scoreJeu =MyReader["score"].ToString() ;
+                scoreJeu = MyReader["score"].ToString();
                 pseudo = IfConnect.text;
                 typeJ = MyReader["typeJoueur"].ToString();
-                
+                nouveau = 0;
+                recupMatrice(nouveau, pseudo);
+
                 SceneManager.LoadScene("Scene3");
 
             }
@@ -168,20 +177,86 @@ public class loginSystem : MonoBehaviour
         }
 
         MyReader.Close();
-        
+
 
         if (Exist == false)
         {
-           txtstate.text = "Pseudo Not Exist";
+            txtstate.text = "Pseudo Not Exist";
         }
 
-        
+
 
         connec.Close();
         Debug.Log(Exist);
 
 
 
+    }
+
+
+    void creerDos()
+    {
+        //cree le dossier des traces
+        string folderPath = "Log";
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+            Console.WriteLine(folderPath);
+
+        }
+
+    }
+
+    //on recupere les données du joueurs
+    void recupMatrice(int nouv, string psd)
+    {
+        if (nouv == 1) // si le joueur est nouveau 
+        {
+            creeMatrice(psd);
+        }
+    }
+
+
+    //si le joueur n'existe pas on 
+    void creeMatrice(string psd)
+    {
+        //creerDos();
+        // on cree le fichier occurence vide 
+        string path = psd + "Occu.txt";
+        File.CreateText(path).Dispose();
+        using (TextWriter writer = new StreamWriter(path, false))
+        {
+            writer.WriteLine("0 0 0");
+            writer.WriteLine("0 0 0");
+            writer.WriteLine("0 0 0");
+            writer.Close();
+        }
+
+        //on cree le fichier avec les transition vide
+        path = psd + "Transition.txt";
+        File.CreateText(path).Dispose();
+        using (TextWriter writer = new StreamWriter(path, false))
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                writer.WriteLine("0 0 0 0 0 0 0 0 0");
+            }
+            writer.Close();
+        }
+
+        //on cree le fichier des traces vide
+        path = psd + "Trace.txt";
+        File.CreateText(path).Dispose();
+      
+
+        /*
+        string path = psd + "Occu.txt";
+
+        StreamWriter sw = File.CreateText(path);
+        string occ = "0 0 0";
+        for (int i = 0; i < 3; i++)
+        { sw.WriteLine(occ); }
+        Debug.Log(occ);*/
     }
 
 
