@@ -27,6 +27,9 @@ public class loginSystem : MonoBehaviour
     public static string typeJ;
     public static int nouveau;
 
+    public static List<float> tableauOccurences = new List<float>();
+    public static List<List<float>> occurencesTransition = new List<List<float>>();
+    public static List<float> Traces = new List<float>();
 
 
     // Start is called before the first frame update
@@ -208,6 +211,97 @@ public class loginSystem : MonoBehaviour
     }
     */
 
+    void recupTransition(string psd)
+    {
+        string line;
+        StreamReader sr = new StreamReader(psd + "Transition.txt");
+        //lire premiere ligne
+        line = sr.ReadLine();
+        int i = 0;
+        //tq le fichier n'est pas vide
+        while (line != null)
+        {
+           var lineWords = line.Split(' ');
+            
+            tableauOccurences.Add(0);
+            List<float> u = new List<float>();
+            occurencesTransition.Add(u);
+            for (int j=0; j<lineWords.Length; j++)
+            { 
+                //on recupere les données
+                occurencesTransition[i].Add(float.Parse(lineWords[j]));
+            }
+            //prochaine ligne
+            line = sr.ReadLine();
+            i = i + 1;
+        }
+        //close the file
+        sr.Close();
+
+        /*foreach (var sublist in occurencesTransition)
+        {
+            foreach (var obj in sublist)
+            {
+                Debug.Log(obj);
+            }
+        }
+        Debug.Log(occurencesTransition);
+        */
+    }
+
+    void recupOccurence(string psd)
+    {
+        string line;
+        StreamReader sr = new StreamReader(psd + "Occu.txt");
+        //lire premiere ligne
+        line = sr.ReadLine();
+        int i = 0;
+        //tq le fichier n'est pas vide
+        while (line != null)
+        {
+            var lineWords = line.Split(' ');
+
+            for (int j = 0; i < lineWords.Length; j++)
+            {
+                //on recupere les données
+                tableauOccurences.Add(float.Parse(lineWords[j]));
+            }
+            //prochaine ligne
+            line = sr.ReadLine();
+            i = i + 1;
+        }
+        //close the file
+        sr.Close();
+
+
+    }
+
+    void recupTrace(string psd)
+    {
+        string line;
+        StreamReader sr = new StreamReader(psd + "Trace.txt");
+        //lire premiere ligne
+        line = sr.ReadLine();
+        int i = 0;
+        //tq le fichier n'est pas vide
+        while (line != null)
+        {
+            var lineWords = line.Split(' ');
+
+            for (int j = 0; i < lineWords.Length; j++)
+            {
+                //on recupere les données
+                Traces.Add(float.Parse(lineWords[j]));
+            }
+            //prochaine ligne
+            line = sr.ReadLine();
+            i = i + 1;
+        }
+        //close the file
+        sr.Close();
+
+
+    }
 
     //on recupere les données du joueurs
     void recupMatrice(int nouv, string psd)
@@ -217,17 +311,11 @@ public class loginSystem : MonoBehaviour
             creeFichierVide(psd);
         }
 
-        //on recupere les données
-       
-        string filePath = psd + "Transition.txt"; // or whatever the path is
-        string readText = File.ReadAllText(filePath);
-        for (int i =0; i<readText.Length; i++)
-        {
-            Debug.Log(readText.Length);
-            Debug.Log(readText[i]);
-        }
-        Debug.Log(readText);
-        
+        //on recupere les données 
+        recupTransition(psd);
+        recupOccurence(psd);
+        recupTrace(psd);
+
 
 
     }
