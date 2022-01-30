@@ -11,12 +11,12 @@ using System;
 public class loginSystem : MonoBehaviour
 
 {
-    string host = "mysql-evhiprojet.alwaysdata.net";
-    string db = "evhiprojet_bdd";
-    string user = "253116";
-    string mdp = "Musique12";
-    MySqlConnection connec;
-    MySqlConnection con;
+    public static string host = "mysql-evhiprojet.alwaysdata.net";
+    public static string db = "evhiprojet_bdd";
+    public static string user = "253116";
+    public static string mdp = "Musique12";
+    public static MySqlConnection connec;
+    public static MySqlConnection con;
     public Text txtstate;
     public InputField IfLogin;
     public InputField IfConnect;
@@ -33,7 +33,7 @@ public class loginSystem : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void ConnectBDD()
+    public void ConnectBDD()
     {
 
 
