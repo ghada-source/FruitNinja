@@ -193,7 +193,7 @@ public class loginSystem : MonoBehaviour
 
     }
 
-
+    /*
     void creerDos()
     {
         //cree le dossier des traces
@@ -206,21 +206,37 @@ public class loginSystem : MonoBehaviour
         }
 
     }
+    */
+
 
     //on recupere les données du joueurs
     void recupMatrice(int nouv, string psd)
     {
         if (nouv == 1) // si le joueur est nouveau 
         {
-            creeMatrice(psd);
+            creeFichierVide(psd);
         }
+
+        //on recupere les données
+       
+        string filePath = psd + "Transition.txt"; // or whatever the path is
+        string readText = File.ReadAllText(filePath);
+        for (int i =0; i<readText.Length; i++)
+        {
+            Debug.Log(readText.Length);
+            Debug.Log(readText[i]);
+        }
+        Debug.Log(readText);
+        
+
+
     }
 
 
     //si le joueur n'existe pas on 
-    void creeMatrice(string psd)
+    void creeFichierVide(string psd)
     {
-        //creerDos();
+        
         // on cree le fichier occurence vide 
         string path = psd + "Occu.txt";
         File.CreateText(path).Dispose();
@@ -248,18 +264,7 @@ public class loginSystem : MonoBehaviour
         path = psd + "Trace.txt";
         File.CreateText(path).Dispose();
       
-
-        /*
-        string path = psd + "Occu.txt";
-
-        StreamWriter sw = File.CreateText(path);
-        string occ = "0 0 0";
-        for (int i = 0; i < 3; i++)
-        { sw.WriteLine(occ); }
-        Debug.Log(occ);*/
     }
-
-
 
 
 }
