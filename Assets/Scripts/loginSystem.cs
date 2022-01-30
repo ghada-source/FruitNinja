@@ -223,7 +223,7 @@ public class loginSystem : MonoBehaviour
         {
            var lineWords = line.Split(' ');
             
-            tableauOccurences.Add(0);
+            
             List<float> u = new List<float>();
             occurencesTransition.Add(u);
             for (int j=0; j<lineWords.Length; j++)
@@ -255,20 +255,20 @@ public class loginSystem : MonoBehaviour
         StreamReader sr = new StreamReader(psd + "Occu.txt");
         //lire premiere ligne
         line = sr.ReadLine();
-        int i = 0;
+        
         //tq le fichier n'est pas vide
         while (line != null)
         {
             var lineWords = line.Split(' ');
-
-            for (int j = 0; i < lineWords.Length; j++)
+           
+            for (int j = 0; j < lineWords.Length; j++)
             {
                 //on recupere les données
                 tableauOccurences.Add(float.Parse(lineWords[j]));
             }
             //prochaine ligne
             line = sr.ReadLine();
-            i = i + 1;
+           
         }
         //close the file
         sr.Close();
@@ -282,20 +282,20 @@ public class loginSystem : MonoBehaviour
         StreamReader sr = new StreamReader(psd + "Trace.txt");
         //lire premiere ligne
         line = sr.ReadLine();
-        int i = 0;
+       
         //tq le fichier n'est pas vide
         while (line != null)
         {
             var lineWords = line.Split(' ');
-
-            for (int j = 0; i < lineWords.Length; j++)
+            
+            for (int j = 0; j < lineWords.Length; j++)
             {
                 //on recupere les données
                 Traces.Add(float.Parse(lineWords[j]));
             }
             //prochaine ligne
             line = sr.ReadLine();
-            i = i + 1;
+           
         }
         //close the file
         sr.Close();
