@@ -10,8 +10,9 @@ public class LevelController : MonoBehaviour
     public GameObject banana;
     public GameObject bomb;
     public GameObject kiwi;
+    public GameObject orange;
     public GameObject watermelon;
-    public int fails;
+    public int fails=0;
     public List<float> tableauOccurences = new List<float>();
     public List<List<float>> occurencesTransition= new List<List<float>>();
     public List<float> fruitListre= new List<float>();
@@ -19,6 +20,14 @@ public class LevelController : MonoBehaviour
     public List<GameObject> fruits= new List<GameObject>();
 
     public int newdata;
+    public float elapsed;
+    int typeJoueur=0;
+    public int mode=0;
+    int freq=5;
+    int timer=20;
+    float gameSpeed=1;
+    float bombRate = (float)0.5;
+    private IEnumerator coroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +41,7 @@ public class LevelController : MonoBehaviour
                 occurencesTransition[i].Add(0);
             }
         }
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
             fruitListco.Add(0);
             fruitListre.Add(0);
@@ -40,7 +49,9 @@ public class LevelController : MonoBehaviour
         fruits.Add(apple);
         fruits.Add(banana);
         fruits.Add(kiwi);
+        fruits.Add(orange);
         fruits.Add(watermelon);
+        coroutine = LevelGenerator();
     }
 
     // Update is called once per frame
@@ -48,10 +59,10 @@ public class LevelController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            levelAdaptator(0, 0, 2, 20, 5, (float)0.3);
+            levelAdaptator();
+            StartCoroutine(coroutine);
         }
     }
-
 
     public int argmin(List<float> tab)
     {
@@ -68,75 +79,67 @@ public class LevelController : MonoBehaviour
         return idmax;
     }
 
-        public void LevelGenerator(int mode,int freq,int timer,float gameSpeed, float bombRate)
+        IEnumerator LevelGenerator()
     {
         fails = 0;
-        float elapsed = 0;
+        elapsed = 0;
         int nfreq = 0;
         float gametime = 0;
         int area = 0;
         while (fails < 3 && elapsed < timer)
         {
+            yield return new WaitForSeconds(gameSpeed);
             elapsed += Time.deltaTime;
             gametime += Time.deltaTime;
             Debug.Log(Time.deltaTime);
-            if (gametime > gameSpeed)
+            gametime = 0;
+            if (nfreq == freq)
             {
-                Debug.Log(gameSpeed);
-                gametime = 0;
-                Debug.Log("sus");
-                if (nfreq == freq)
+                nfreq = 0;
+                if (mode == 0)
                 {
-                    nfreq = 0;
-                    if (mode == 0)
-                    {
-                        area = argmin(tableauOccurences);
-                    }
-                    else
-                    {
-                        area = argmin(occurencesTransition[newdata]);
-                    }
+                    area = argmin(tableauOccurences);
                 }
                 else
                 {
-                    area = UnityEngine.Random.Range(0, 8);
-                    nfreq += 1;
+                    area = argmin(occurencesTransition[newdata]);
                 }
-                float p = UnityEngine.Random.Range((float)0, (float)1);
-                if (p <= bombRate)
-                {
-                    TrowBomb(area);
-                }
-                else
-                {
-                    TrowFruit(area);
-                }
+            }
+            else
+            {
+                area = UnityEngine.Random.Range(0, 8);
+                nfreq += 1;
+            }
+            float p = UnityEngine.Random.Range((float)0, (float)1);
+            if (p <= bombRate)
+            {
+                TrowBomb(area);
+            }
+            else
+            {
+                TrowFruit(area);
             }
         }
     }
 
-    public void levelAdaptator(int typeJoueur, int mode, int freq, int timer, float gameSpeed, float bombRate)
+    public void levelAdaptator()
     {
-        int myf = freq;
-        float mybr = bombRate;
-        float mygs = gameSpeed;
         if (typeJoueur == 0)
         {
-            myf= (int) freq/2;
-            mybr = bombRate/2;
-            mygs = gameSpeed*2;
+            freq= (int) freq/2;
+            bombRate = bombRate/2;
+            gameSpeed = gameSpeed*2;
         }
         if (typeJoueur == 1)
         {
-            myf = (int)Math.Ceiling(freq * 1.5);
-            mybr = (float)(bombRate * 1.5);
-            if (mybr > 0.9)
+            freq = (int)Math.Ceiling(freq * 1.5);
+            bombRate = (float)(bombRate * 1.5);
+            if (bombRate > 0.9)
             {
-                mybr = (float)0.9;
+                bombRate = (float)0.9;
             }
-            mygs = (float)(gameSpeed / 1.5);
+            gameSpeed = (float)(gameSpeed / 1.5);
         }
-        LevelGenerator(mode, myf, timer, mygs, mybr);
     }
 
 
@@ -212,6 +215,7 @@ public class LevelController : MonoBehaviour
         }
         fruitListco[chof] += 1;
         GameObject app = Instantiate(fruits[chof], fruits[chof].transform);
+        app.gameObject.AddComponent<FruitController>();
         Rigidbody b = app.GetComponent<Rigidbody>();
         app.transform.position = (new Vector3((float)x, (float)y, 0));
         b.AddForce(Vector3.up * 14, ForceMode.Impulse);
