@@ -214,7 +214,7 @@ public class LevelController : MonoBehaviour
              y = Random.Range((float)-3.1, (float)0);
         }
         float p = UnityEngine.Random.Range((float)0, (float)1); 
-        if (p > 0.99)
+        if (p > 0.3)
         {
             chof = Random.Range(0, fruits.Count-1);
         }
