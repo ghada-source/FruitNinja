@@ -18,14 +18,19 @@ public class LevelController : MonoBehaviour
     public List<float> fruitListre= new List<float>();
     public List<float> fruitListco= new List<float>();
     public List<GameObject> fruits= new List<GameObject>();
+    public GameObject boum;
+    public AudioClip boumsound;
+    public AudioSource source;
+    public AudioClip cutsound;
 
-    public int newdata;
+    public int newdata=0;
     public float elapsed;
+    public bool gameOver = false;
     int typeJoueur=0;
     public int mode=0;
     int freq=5;
     int timer=20;
-    float gameSpeed=1;
+    float gameSpeed=(float)0.0005;
     float bombRate = (float)0.5;
     private IEnumerator coroutine;
 
@@ -91,7 +96,6 @@ public class LevelController : MonoBehaviour
             yield return new WaitForSeconds(gameSpeed);
             elapsed += Time.deltaTime;
             gametime += Time.deltaTime;
-            Debug.Log(Time.deltaTime);
             gametime = 0;
             if (nfreq == freq)
             {
@@ -102,6 +106,7 @@ public class LevelController : MonoBehaviour
                 }
                 else
                 {
+
                     area = argmin(occurencesTransition[newdata]);
                 }
             }
@@ -119,6 +124,15 @@ public class LevelController : MonoBehaviour
             {
                 TrowFruit(area);
             }
+        }
+        if (fails >= 3)
+        {
+            //game over code here
+            gameOver = true;
+        }
+        if (elapsed >= timer)
+        {
+            //end of level code here
         }
     }
 
@@ -200,7 +214,7 @@ public class LevelController : MonoBehaviour
              y = Random.Range((float)-3.1, (float)0);
         }
         float p = UnityEngine.Random.Range((float)0, (float)1); 
-        if (p > 0.3)
+        if (p > 0.99)
         {
             chof = Random.Range(0, fruits.Count-1);
         }
@@ -210,6 +224,10 @@ public class LevelController : MonoBehaviour
             for (int g = 0; g < fruits.Count; g++)
             {
                 datatab.Add(fruitListre[g] / fruitListco[g]);
+                if (Double.IsNaN(datatab[g]) == true)
+                {
+                    datatab[g] = (float)0.0;
+                }
             }
             chof = argmin(datatab);
         }
@@ -217,6 +235,8 @@ public class LevelController : MonoBehaviour
         GameObject app = Instantiate(fruits[chof], fruits[chof].transform);
         app.gameObject.AddComponent<FruitController>();
         Rigidbody b = app.GetComponent<Rigidbody>();
+        app.GetComponent<FruitController>().cut = cutsound;
+        app.GetComponent<FruitController>().source = source;
         app.transform.position = (new Vector3((float)x, (float)y, 0));
         b.AddForce(Vector3.up * 14, ForceMode.Impulse);
         b.AddTorque(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), ForceMode.Impulse);
@@ -273,6 +293,10 @@ public class LevelController : MonoBehaviour
         }
         GameObject app = Instantiate(bomb, bomb.transform);
         Rigidbody b = app.GetComponent<Rigidbody>();
+        app.gameObject.AddComponent<BombController>();
+        app.GetComponent<BombController>().explosion =boum;
+        app.GetComponent<BombController>().boum = boumsound;
+        app.GetComponent<BombController>().source = source;
         app.transform.position = (new Vector3((float)x, (float)y, 0));
         b.AddForce(Vector3.up * 14, ForceMode.Impulse);
         b.AddTorque(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), ForceMode.Impulse);
