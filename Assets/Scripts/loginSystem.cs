@@ -11,12 +11,12 @@ using System;
 public class loginSystem : MonoBehaviour
 
 {
-    public static string host = "mysql-evhiprojet.alwaysdata.net";
-    public static string db = "evhiprojet_bdd";
-    public static string user = "253116";
-    public static string mdp = "Musique12";
-    public static MySqlConnection connec;
-    public static MySqlConnection con;
+    public string host = "mysql-evhiprojet.alwaysdata.net";
+    public  string db = "evhiprojet_bdd";
+    public  string user = "253116";
+    public  string mdp = "Musique12";
+    public  MySqlConnection connec;
+    public  MySqlConnection con;
     public Text txtstate;
     public InputField IfLogin;
     public InputField IfConnect;
@@ -29,7 +29,7 @@ public class loginSystem : MonoBehaviour
 
     public static List<float> tableauOccurences = new List<float>();
     public static List<List<float>> occurencesTransition = new List<List<float>>();
-    public static List<float> Traces = new List<float>();
+    public static List<List<float>> Traces = new List<List<float>>();
 
 
     // Start is called before the first frame update
@@ -279,23 +279,26 @@ public class loginSystem : MonoBehaviour
     void recupTrace(string psd)
     {
         string line;
-        StreamReader sr = new StreamReader(psd + "Trace.txt");
+        StreamReader sr = new StreamReader(psd + "Transition.txt");
         //lire premiere ligne
         line = sr.ReadLine();
-       
+        int i = 0;
         //tq le fichier n'est pas vide
         while (line != null)
         {
             var lineWords = line.Split(' ');
-            
+
+
+            List<float> u = new List<float>();
+            Traces.Add(u);
             for (int j = 0; j < lineWords.Length; j++)
             {
-                //on recupere les données
-                Traces.Add(float.Parse(lineWords[j]));
+                //on recupere la position en x et y
+                Traces[i].Add(float.Parse(lineWords[j]));
             }
             //prochaine ligne
             line = sr.ReadLine();
-           
+            i = i + 1;
         }
         //close the file
         sr.Close();
