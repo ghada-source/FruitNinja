@@ -87,7 +87,7 @@ public class LevelController : MonoBehaviour
             }
             if (finished == true)
             {
-                SceneManager.LoadScene("Prototype 5");
+                SceneManager.LoadScene("End");
             }
         }
         if (Input.GetKeyDown(KeyCode.Backspace) && finished == true)
@@ -159,6 +159,7 @@ public class LevelController : MonoBehaviour
         }
         DataHolder.lastScore = score;
         finished = true;
+        SceneManager.LoadScene("End");
         if (fails >= 3)
         {
             //game over code here
