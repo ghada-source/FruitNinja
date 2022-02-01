@@ -74,7 +74,6 @@ public class UpdateMatrice : MonoBehaviour
         
         List<float> slist = new List<float> { newdataX , newdataY}; 
         traces.Add(slist); //on ajoute la nouvelle trace
-
         int i = findIndex(newdataX, newdataY);
         tableauOccurences[i] =1 + tableauOccurences[i]; // on met a jour les occurences
         OccuTransition(newdataX, newdataY, slist[0], slist[1]);

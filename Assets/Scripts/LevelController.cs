@@ -113,11 +113,6 @@ public class LevelController : MonoBehaviour
             //yield return new WaitForSeconds(gameSpeed);
             yield return 0;
             elapsed += Time.deltaTime;
-            foreach (var x in loginSystem.tableauOccurences)
-            {
-                Debug.Log(x.ToString());
-            }
-                Debug.Log(loginSystem.tableauOccurences[0]);
             gametime += Time.deltaTime;
             if (gametime > gameSpeed)
             {
@@ -128,6 +123,7 @@ public class LevelController : MonoBehaviour
                     if (mode == 0)
                     {
                         area = argmin(loginSystem.tableauOccurences);
+                        Debug.Log(area);
                     }
                     else
                     {
