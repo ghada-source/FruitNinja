@@ -20,7 +20,7 @@ public class ChoiseLevel : MonoBehaviour
 
     public static string level;
     public Button yourButton;
-    public loginSystem logi;
+    
 
     public void ConnectBDD()
     {
@@ -63,7 +63,7 @@ public class ChoiseLevel : MonoBehaviour
             DataHolder.timer = 60;
             DataHolder.mode = 0;
             DataHolder.gameSpeed = 2;
-            SceneManager.LoadScene("Prototype 5");
+            //SceneManager.LoadScene("Prototype 5");
 
            
         }
