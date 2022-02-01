@@ -33,6 +33,7 @@ public class FruitController : MonoBehaviour
     private void OnMouseDown()
     {
         source.PlayOneShot(cut);
+        GameObject.Find("Trower").GetComponent<LevelController>().score += 1;
         Destroy(gameObject);
     }
     private void OnTriggerEnter(Collider other)
@@ -40,6 +41,7 @@ public class FruitController : MonoBehaviour
         if (gameObject.GetComponent<Rigidbody>().velocity.y < 0)
         {
             Destroy(gameObject);
+
         }
     }
 }

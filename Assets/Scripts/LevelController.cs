@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
@@ -22,17 +24,24 @@ public class LevelController : MonoBehaviour
     public AudioClip boumsound;
     public AudioSource source;
     public AudioClip cutsound;
+    public int score;
+    public TextMeshProUGUI scoret;
+    public TextMeshProUGUI starttext;
+    public TextMeshProUGUI gameo;
+    public TextMeshProUGUI retry;
+    public TextMeshProUGUI suc;
+    public TextMeshProUGUI failu;
 
     public int newdata=0;
     public float elapsed;
-    public bool gameOver = false;
-    int typeJoueur=0;
-    public int mode=0;
-    int freq=5;
-    int timer=20;
-    float gameSpeed=(float)0.0005;
-    float bombRate = (float)0.5;
+    public bool gameOver=false;
+    int typeJoueur;
+    public int mode;
+    int freq;
+    float gameSpeed;
+    float bombRate;
     private IEnumerator coroutine;
+    private bool finished;
 
     // Start is called before the first frame update
     void Start()
@@ -57,16 +66,35 @@ public class LevelController : MonoBehaviour
         fruits.Add(orange);
         fruits.Add(watermelon);
         coroutine = LevelGenerator();
+        score = 0;
+        scoret.text = "Score : " + score;
+        failu.text = "Fails : " + fails;
+        finished = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        scoret.text = "Score : " + score;
+        failu.text = "Fails : " + fails;
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            levelAdaptator();
-            StartCoroutine(coroutine);
+            if (finished == false)
+            {
+                starttext.gameObject.SetActive(false);
+                levelAdaptator();
+                StartCoroutine(coroutine);
+            }
+            if (finished == true)
+            {
+                SceneManager.LoadScene("Prototype 5");
+            }
         }
+        if (Input.GetKeyDown(KeyCode.Backspace) && finished == true)
+        {
+            SceneManager.LoadScene("Scene 3");
+        }
+
     }
 
     public int argmin(List<float> tab)
@@ -91,68 +119,81 @@ public class LevelController : MonoBehaviour
         int nfreq = 0;
         float gametime = 0;
         int area = 0;
-        while (fails < 3 && elapsed < timer)
+        while (fails < 3 && elapsed < DataHolder.timer && gameOver==false)
         {
-            yield return new WaitForSeconds(gameSpeed);
+            //yield return new WaitForSeconds(gameSpeed);
+            yield return 0;
             elapsed += Time.deltaTime;
             gametime += Time.deltaTime;
-            gametime = 0;
-            if (nfreq == freq)
+            if (gametime > gameSpeed)
             {
-                nfreq = 0;
-                if (mode == 0)
+                gametime = 0;
+                if (nfreq == freq)
                 {
-                    area = argmin(tableauOccurences);
+                    nfreq = 0;
+                    if (mode == 0)
+                    {
+                        area = argmin(tableauOccurences);
+                    }
+                    else
+                    {
+
+                        area = argmin(occurencesTransition[newdata]);
+                    }
                 }
                 else
                 {
-
-                    area = argmin(occurencesTransition[newdata]);
+                    area = UnityEngine.Random.Range(0, 8);
+                    nfreq += 1;
+                }
+                float p = UnityEngine.Random.Range((float)0, (float)1);
+                if (p <= bombRate)
+                {
+                    TrowBomb(area);
+                }
+                else
+                {
+                    TrowFruit(area);
                 }
             }
-            else
-            {
-                area = UnityEngine.Random.Range(0, 8);
-                nfreq += 1;
-            }
-            float p = UnityEngine.Random.Range((float)0, (float)1);
-            if (p <= bombRate)
-            {
-                TrowBomb(area);
-            }
-            else
-            {
-                TrowFruit(area);
-            }
         }
+        DataHolder.lastScore = score;
+        finished = true;
         if (fails >= 3)
         {
             //game over code here
             gameOver = true;
+            gameo.gameObject.SetActive(true);
         }
-        if (elapsed >= timer)
+        if (elapsed >= DataHolder.timer)
         {
+            suc.gameObject.SetActive(true);
             //end of level code here
         }
+        gameo.gameObject.SetActive(true);
+        retry.gameObject.SetActive(true);
     }
 
     public void levelAdaptator()
     {
+        freq = DataHolder.freq;
+        bombRate = DataHolder.bombRate;
+        gameSpeed = DataHolder.gameSpeed;
         if (typeJoueur == 0)
         {
-            freq= (int) freq/2;
-            bombRate = bombRate/2;
-            gameSpeed = gameSpeed*2;
+            freq= (int)DataHolder.freq /2;
+            bombRate = DataHolder.bombRate /2;
+            gameSpeed = DataHolder.gameSpeed *2;
         }
         if (typeJoueur == 1)
         {
-            freq = (int)Math.Ceiling(freq * 1.5);
-            bombRate = (float)(bombRate * 1.5);
-            if (bombRate > 0.9)
+            freq = (int)Math.Ceiling(DataHolder.freq * 1.5);
+            bombRate = (float)(DataHolder.bombRate * 1.5);
+            if (DataHolder.bombRate > 0.9)
             {
                 bombRate = (float)0.9;
             }
-            gameSpeed = (float)(gameSpeed / 1.5);
+            gameSpeed = (float)(DataHolder.gameSpeed / 1.5);
         }
     }
 

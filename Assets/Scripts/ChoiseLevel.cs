@@ -58,6 +58,13 @@ public class ChoiseLevel : MonoBehaviour
         if (mybutton.gameObject.tag == "Facile")
         {
             level = "Facile";
+            DataHolder.bombRate = (float)0.0;
+            DataHolder.freq = 5;
+            DataHolder.timer = 60;
+            DataHolder.mode = 0;
+            DataHolder.gameSpeed = 2;
+            SceneManager.LoadScene("Prototype 5");
+
            
         }
         else if (mybutton.gameObject.tag == "Difficile")
