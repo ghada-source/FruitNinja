@@ -10,7 +10,6 @@ public static class DataHolder
     public static int  timer = 602;
     public static float gameSpeed = (float)2;
     public static float bombRate = (float)0.5;
-    public static List<List<float>> occurencesTransition;
-    public static List<float> tableauOccurences;
     public static int lastScore;
+    public static int newdata;
 }

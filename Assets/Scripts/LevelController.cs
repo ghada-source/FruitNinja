@@ -5,6 +5,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Tobii.Gaming;
 
 public class LevelController : MonoBehaviour
 {
@@ -15,8 +16,6 @@ public class LevelController : MonoBehaviour
     public GameObject orange;
     public GameObject watermelon;
     public int fails=0;
-    public List<float> tableauOccurences = new List<float>();
-    public List<List<float>> occurencesTransition= new List<List<float>>();
     public List<float> fruitListre= new List<float>();
     public List<float> fruitListco= new List<float>();
     public List<GameObject> fruits= new List<GameObject>();
@@ -32,7 +31,6 @@ public class LevelController : MonoBehaviour
     public TextMeshProUGUI suc;
     public TextMeshProUGUI failu;
 
-    public int newdata=0;
     public float elapsed;
     public bool gameOver=false;
     int typeJoueur;
@@ -46,15 +44,6 @@ public class LevelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i< 9; i++) {
-            tableauOccurences.Add(0);
-            List<float> u = new List<float>();
-            occurencesTransition.Add(u);
-            for (int k = 0; k < 9; k++)
-            {
-                occurencesTransition[i].Add(0);
-            }
-        }
         for (int i = 0; i < 5; i++)
         {
             fruitListco.Add(0);
@@ -124,6 +113,11 @@ public class LevelController : MonoBehaviour
             //yield return new WaitForSeconds(gameSpeed);
             yield return 0;
             elapsed += Time.deltaTime;
+            foreach (var x in loginSystem.tableauOccurences)
+            {
+                Debug.Log(x.ToString());
+            }
+                Debug.Log(loginSystem.tableauOccurences[0]);
             gametime += Time.deltaTime;
             if (gametime > gameSpeed)
             {
@@ -133,12 +127,12 @@ public class LevelController : MonoBehaviour
                     nfreq = 0;
                     if (mode == 0)
                     {
-                        area = argmin(tableauOccurences);
+                        area = argmin(loginSystem.tableauOccurences);
                     }
                     else
                     {
 
-                        area = argmin(occurencesTransition[newdata]);
+                        area = argmin(loginSystem.occurencesTransition[DataHolder.newdata]);
                     }
                 }
                 else

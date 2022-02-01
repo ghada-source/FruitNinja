@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tobii.Gaming;
 
 public class UpdateMatrice : MonoBehaviour
 {
     // Start is called before the first frame update
+    Vector2 filteredPoint;
+    public Camera cam;
+
  
     
    
@@ -13,35 +17,35 @@ public class UpdateMatrice : MonoBehaviour
 
     {
         
-        if (newdataX < 3 & newdataY < 3)
+        if (newdataX < cam.scaledPixelWidth/3  & newdataY < cam.scaledPixelHeight/3)
         {
             return 0;
         }
-        else if (newdataX > 3 & newdataX < 3 & newdataY < 3)
+        else if (newdataX > cam.scaledPixelWidth/3 & newdataX < 2*cam.scaledPixelWidth/3 & newdataY < cam.scaledPixelHeight/3)
         {
             return 1;
         }
-        else if (newdataX > 3 & newdataY < 3)
+        else if (newdataX > 2*cam.scaledPixelWidth/3 & newdataY < cam.scaledPixelHeight/3)
         {
             return 2;
         }
-        else if (newdataX < 3 & newdataY > 3 & newdataY < 3)
+        else if (newdataX < cam.scaledPixelWidth/3 & newdataY > cam.scaledPixelHeight/3 & newdataY < 2*cam.scaledPixelHeight / 3)
         {
             return 3;
         }
-        else if (newdataX > 3 & newdataX < 3 & newdataY > 3 & newdataY < 3)
+        else if (newdataX > cam.scaledPixelWidth/3 & newdataX < 2*cam.scaledPixelWidth/3 & newdataY > cam.scaledPixelHeight / 3 & newdataY < 2*cam.scaledPixelHeight / 3)
         {
             return 4;
         }
-        else if (newdataX > 3  & newdataY > 3 & newdataY < 3)
+        else if (newdataX > 2*cam.scaledPixelWidth/3 & newdataY > cam.scaledPixelHeight / 3 & newdataY < 2*cam.scaledPixelHeight / 3)
         {
             return 5;
         }
-        else if (newdataX < 3 & newdataY > 3)
+        else if (newdataX < cam.scaledPixelWidth/3 & newdataY > 2*cam.scaledPixelHeight / 3)
         {
             return 6;
         }
-        else if (newdataX > 3 & newdataX < 3 & newdataY > 3 )
+        else if (newdataX > cam.scaledPixelWidth/3 & newdataX < 2*cam.scaledPixelWidth/3 & newdataY > 2*cam.scaledPixelHeight / 3)
         {
             return 7;
         }
@@ -90,6 +94,13 @@ public class UpdateMatrice : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector2 gaze = TobiiAPI.GetGazePoint().Screen;
+        filteredPoint = Vector2.Lerp(filteredPoint, gaze, 0.5f);
+        if (filteredPoint.x >0 && filteredPoint.y > 0)
+        {
+            analysisData(filteredPoint.x, filteredPoint.y);
+            DataHolder.newdata = findIndex(filteredPoint.x, filteredPoint.y);
+        }
         
     }
 
