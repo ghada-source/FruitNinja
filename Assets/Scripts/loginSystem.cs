@@ -222,14 +222,20 @@ public class loginSystem : MonoBehaviour
         while (line != null)
         {
            var lineWords = line.Split(' ');
-            
-            
+
+           
             List<float> u = new List<float>();
             occurencesTransition.Add(u);
             for (int j=0; j<lineWords.Length; j++)
-            { 
+            {
+                char k = ' ';
+                if (String.Compare(lineWords[j], k.ToString()) > -1)
+                {
+                    occurencesTransition[i].Add(float.Parse(lineWords[j]));
+                }
+                //occurencesTransition[i][j] = float.Parse(lineWords[j]);
                 //on recupere les données
-                occurencesTransition[i].Add(float.Parse(lineWords[j]));
+                //occurencesTransition[i].Add(float.Parse(lineWords[j]));
             }
             //prochaine ligne
             line = sr.ReadLine();
@@ -263,8 +269,12 @@ public class loginSystem : MonoBehaviour
            
             for (int j = 0; j < lineWords.Length; j++)
             {
-                //on recupere les données
-                tableauOccurences.Add(float.Parse(lineWords[j]));
+                char k = ' ';
+                if (String.Compare(lineWords[j], k.ToString()) > -1)
+                {
+                    //on recupere les données
+                    tableauOccurences.Add(float.Parse(lineWords[j]));
+                }
             }
             //prochaine ligne
             line = sr.ReadLine();
@@ -293,8 +303,12 @@ public class loginSystem : MonoBehaviour
             Traces.Add(u);
             for (int j = 0; j < lineWords.Length; j++)
             {
-                //on recupere la position en x et y
-                Traces[i].Add(float.Parse(lineWords[j]));
+                char k = ' ';
+                if (String.Compare(lineWords[j], k.ToString()) > -1)
+                {
+                    //on recupere la position en x et y
+                    Traces[i].Add(float.Parse(lineWords[j]));
+                }
             }
             //prochaine ligne
             line = sr.ReadLine();

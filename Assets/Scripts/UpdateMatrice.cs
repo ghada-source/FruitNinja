@@ -77,7 +77,7 @@ public class UpdateMatrice : MonoBehaviour
 
         int i = findIndex(newdataX, newdataY);
         tableauOccurences[i] =1 + tableauOccurences[i]; // on met a jour les occurences
-        OccuTransition(newdataX, newdataY, slist[0], slist[1]);
+        OccuTransition(newdataX, newdataY, lastTrace[0], lastTrace[1]);
 
         //on met a jour les variables global
         loginSystem.Traces = traces;
