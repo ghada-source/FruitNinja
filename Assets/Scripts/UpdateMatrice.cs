@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Tobii.Gaming;
+//using Tobii.Gaming;
 
 public class UpdateMatrice : MonoBehaviour
 {
@@ -23,15 +23,15 @@ public class UpdateMatrice : MonoBehaviour
         }
         else if (newdataX > cam.scaledPixelWidth/3 & newdataX < 2*cam.scaledPixelWidth/3 & newdataY < cam.scaledPixelHeight/3)
         {
-            return 1;
+            return 3;
         }
         else if (newdataX > 2*cam.scaledPixelWidth/3 & newdataY < cam.scaledPixelHeight/3)
         {
-            return 2;
+            return 6;
         }
         else if (newdataX < cam.scaledPixelWidth/3 & newdataY > cam.scaledPixelHeight/3 & newdataY < 2*cam.scaledPixelHeight / 3)
         {
-            return 3;
+            return 1;
         }
         else if (newdataX > cam.scaledPixelWidth/3 & newdataX < 2*cam.scaledPixelWidth/3 & newdataY > cam.scaledPixelHeight / 3 & newdataY < 2*cam.scaledPixelHeight / 3)
         {
@@ -39,15 +39,15 @@ public class UpdateMatrice : MonoBehaviour
         }
         else if (newdataX > 2*cam.scaledPixelWidth/3 & newdataY > cam.scaledPixelHeight / 3 & newdataY < 2*cam.scaledPixelHeight / 3)
         {
-            return 5;
+            return 7;
         }
         else if (newdataX < cam.scaledPixelWidth/3 & newdataY > 2*cam.scaledPixelHeight / 3)
         {
-            return 6;
+            return 2;
         }
         else if (newdataX > cam.scaledPixelWidth/3 & newdataX < 2*cam.scaledPixelWidth/3 & newdataY > 2*cam.scaledPixelHeight / 3)
         {
-            return 7;
+            return 5;
         }
 
         return 8;
@@ -74,6 +74,7 @@ public class UpdateMatrice : MonoBehaviour
         
         List<float> slist = new List<float> { newdataX , newdataY}; 
         traces.Add(slist); //on ajoute la nouvelle trace
+
         int i = findIndex(newdataX, newdataY);
         tableauOccurences[i] =1 + tableauOccurences[i]; // on met a jour les occurences
         OccuTransition(newdataX, newdataY, slist[0], slist[1]);
@@ -93,7 +94,8 @@ public class UpdateMatrice : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 gaze = TobiiAPI.GetGazePoint().Screen;
+        //Vector2 gaze = TobiiAPI.GetGazePoint().Screen;
+        Vector2 gaze = new Vector2(Random.Range(0, cam.scaledPixelWidth), Random.Range(0, cam.scaledPixelHeight));
         filteredPoint = Vector2.Lerp(filteredPoint, gaze, 0.5f);
         if (filteredPoint.x >0 && filteredPoint.y > 0)
         {

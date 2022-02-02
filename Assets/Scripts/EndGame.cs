@@ -16,23 +16,23 @@ public class EndGame : MonoBehaviour
     public string mdp = "Musique12";
     public MySqlConnection connec;
     public MySqlConnection con;
+    private bool done=false;
 
     public Button yourButton;
 
-    void Start()
+    void Update()
     {
-
-        yourButton.onClick.AddListener(() => TaskOnClick(yourButton));
+        if (GameObject.Find("Trower").GetComponent<LevelController>().finished == true && done == false)
+        {
+            done = true;
+            endGame();
+            saveBDD();
+            saveFichier();
+        }
+        
+        //yourButton.onClick.AddListener(() => TaskOnClick(yourButton));
     }
 
-    void TaskOnClick(Button mybutton)
-    {
-        endGame();
-        saveBDD();
-        Application.Quit();
-       
-
-    }
 
     public void saveBDD()
     {
@@ -68,14 +68,12 @@ public class EndGame : MonoBehaviour
         File.CreateText(path).Dispose();
         using (TextWriter writer = new StreamWriter(path, false))
         {
-            int i = 0;
+            
             foreach (float item in loginSystem.tableauOccurences)
             { 
-                string elem = "";
-                if (i == 3)
-                {
-                    writer.WriteLine(item);
-                }
+               
+                writer.WriteLine(item);
+                
                 
             }
            
@@ -84,8 +82,31 @@ public class EndGame : MonoBehaviour
 
 
         //enegristre transition
+        // on cree le fichier occurence vide 
+        path = loginSystem.pseudo + "Transition.txt";
 
-        //ajouter derniere traces
+        File.CreateText(path).Dispose();
+        using (TextWriter writer = new StreamWriter(path, false))
+        {
+
+            foreach (var sublist in loginSystem.occurencesTransition)
+            {
+                string line = "";
+                foreach (var obj in sublist)
+                {
+
+                    line = line + " " + obj;
+                }
+                Debug.Log(line);
+
+                writer.WriteLine(line);
+            }
+ 
+            writer.Close();
+        }
+
+
+
 
     }
     public void endGame()

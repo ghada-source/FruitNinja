@@ -5,7 +5,6 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using TMPro;
 using UnityEngine.SceneManagement;
-using Tobii.Gaming;
 
 public class LevelController : MonoBehaviour
 {
@@ -39,7 +38,7 @@ public class LevelController : MonoBehaviour
     float gameSpeed;
     float bombRate;
     private IEnumerator coroutine;
-    private bool finished;
+    public bool finished;
 
     // Start is called before the first frame update
     void Start()
@@ -76,12 +75,12 @@ public class LevelController : MonoBehaviour
             }
             if (finished == true)
             {
-                SceneManager.LoadScene("End");
+                SceneManager.LoadScene("Prototype 5");
             }
         }
         if (Input.GetKeyDown(KeyCode.Backspace) && finished == true)
         {
-            SceneManager.LoadScene("Scene 3");
+            SceneManager.LoadScene("Scene3");
         }
 
     }
@@ -123,7 +122,6 @@ public class LevelController : MonoBehaviour
                     if (mode == 0)
                     {
                         area = argmin(loginSystem.tableauOccurences);
-                        Debug.Log(area);
                     }
                     else
                     {
@@ -149,8 +147,7 @@ public class LevelController : MonoBehaviour
         }
         DataHolder.lastScore = score;
         finished = true;
-        SceneManager.LoadScene("End");
-        if (fails >= 3)
+        if (fails >= 3 || gameOver==true)
         {
             //game over code here
             gameOver = true;
@@ -161,7 +158,6 @@ public class LevelController : MonoBehaviour
             suc.gameObject.SetActive(true);
             //end of level code here
         }
-        gameo.gameObject.SetActive(true);
         retry.gameObject.SetActive(true);
     }
 
