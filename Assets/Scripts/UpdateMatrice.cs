@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using Tobii.Gaming;
+using Tobii.Gaming;
 
 public class UpdateMatrice : MonoBehaviour
 {
@@ -94,8 +94,8 @@ public class UpdateMatrice : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Vector2 gaze = TobiiAPI.GetGazePoint().Screen;
-        Vector2 gaze = new Vector2(Random.Range(0, cam.scaledPixelWidth), Random.Range(0, cam.scaledPixelHeight));
+        Vector2 gaze = TobiiAPI.GetGazePoint().Screen;
+        //Vector2 gaze = new Vector2(Random.Range(0, cam.scaledPixelWidth), Random.Range(0, cam.scaledPixelHeight));
         filteredPoint = Vector2.Lerp(filteredPoint, gaze, 0.5f);
         if (filteredPoint.x >0 && filteredPoint.y > 0)
         {

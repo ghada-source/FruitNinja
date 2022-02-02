@@ -135,6 +135,7 @@ public class LevelController : MonoBehaviour
                     nfreq += 1;
                 }
                 float p = UnityEngine.Random.Range((float)0, (float)1);
+                Debug.Log((p, bombRate));
                 if (p <= bombRate)
                 {
                     TrowBomb(area);
@@ -176,7 +177,7 @@ public class LevelController : MonoBehaviour
         {
             freq = (int)Math.Ceiling(DataHolder.freq * 1.5);
             bombRate = (float)(DataHolder.bombRate * 1.5);
-            if (DataHolder.bombRate > 0.9)
+            if (bombRate > 0.9)
             {
                 bombRate = (float)0.9;
             }
