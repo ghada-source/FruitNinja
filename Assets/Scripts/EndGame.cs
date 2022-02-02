@@ -25,6 +25,7 @@ public class EndGame : MonoBehaviour
         if (GameObject.Find("Trower").GetComponent<LevelController>().finished == true && done == false)
         {
             done = true;
+            Debug.Log("It is alive");
             endGame();
             saveBDD();
             saveFichier();
