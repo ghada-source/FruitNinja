@@ -33,7 +33,6 @@ public class FruitController : MonoBehaviour
     private void OnMouseDown()
     {
         source.PlayOneShot(cut);
-        Debug.Log(gameObject.name);
         if (gameObject.name == "apple(Clone)")
         {
             GameObject.Find("Trower").GetComponent<LevelController>().fruitListre[0] += 1;

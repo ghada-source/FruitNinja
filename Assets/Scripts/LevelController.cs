@@ -166,13 +166,13 @@ public class LevelController : MonoBehaviour
         freq = DataHolder.freq;
         bombRate = DataHolder.bombRate;
         gameSpeed = DataHolder.gameSpeed;
-        if (typeJoueur == 0)
+        if (loginSystem.typeJ == "debutant")
         {
             freq= (int)DataHolder.freq /2;
             bombRate = DataHolder.bombRate /2;
             gameSpeed = DataHolder.gameSpeed *2;
         }
-        if (typeJoueur == 1)
+        if (loginSystem.typeJ == "expert")
         {
             freq = (int)Math.Ceiling(DataHolder.freq * 1.5);
             bombRate = (float)(DataHolder.bombRate * 1.5);
@@ -184,12 +184,6 @@ public class LevelController : MonoBehaviour
         }
     }
 
-
-
-    private void TrowBomb(object area)
-    {
-        throw new NotImplementedException();
-    }
 
     public void TrowFruit(int area)
     {
